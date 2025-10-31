@@ -1,29 +1,10 @@
 const express = require("express");
-const userModel = require("../models/user.model")
+const {registerController , loginController} = require("../controllers/auth.controller")
+
 
 const router = express.Router()
 
-router.post("/register", async(req,res)=>{
-    const {username,password} = req.body
-
-    const existingUser = await userModel.findOne({
-        username
-    })
-
-    if(existingUser){
-        return res.status(409).json({
-            message:"username already exists"
-        })
-    }
-
-    const user = await userModel.create({
-        username,password
-    })
-    
-    res.status(201).json({
-        message:"user created succesfully",
-        user
-    })
-})
+router.post("/register", registerController)
+router.post("/login", loginController)
 
 module.exports = router
