@@ -18,11 +18,13 @@
   },
   "homepage": "https://github.com/DakshGoswami5/Social-Media#readme",
   "dependencies": {
+    "@google/genai": "^1.28.0",
     "bcryptjs": "^3.0.2",
     "cookie-parser": "^1.4.7",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.19.2"
+    "mongoose": "^8.19.2",
+    "multer": "^2.0.2"
   }
 }
