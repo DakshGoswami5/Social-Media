@@ -7,6 +7,8 @@ const postSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectID,
         ref:"users"
     }
+}, {
+    timestamps: true  // ✅ createdAt aur updatedAt auto add ho jayenge
 })
 
 const postModel = mongoose.model("post", postSchema)

@@ -37,6 +37,28 @@ async function createPostController(req,res) {
     }
 } 
 
+// GET user's posts
+async function getUserPostsController(req, res) {
+    try {
+        // Current logged-in user ki posts fetch karo
+        const posts = await postModel.find({ user: req.user._id })
+            .sort({ createdAt: -1 }); // Latest first
+
+        res.status(200).json({
+            success: true,
+            posts
+        });
+    } catch (error) {
+        console.error("Error fetching posts:", error);
+        res.status(500).json({
+            success: false,
+            message: "Error fetching posts",
+            error: error.message
+        });
+    }
+}
+
 module.exports = {
-    createPostController
+    createPostController,
+    getUserPostsController
 }
