@@ -29,12 +29,20 @@ const Navbar = () => {
 }, []);
 
   const handleLogout = async () => {
-  await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/auth/logout`, {
-    method: "POST",
-    credentials: "include",
-  });
-  setIsLoggedIn(false);
-  navigate("/login");
+  try {
+    await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/auth/logout`, {
+      method: "POST",
+      credentials: "include",
+    });
+    
+    setIsLoggedIn(false);
+    navigate("/login");
+  } catch (error) {
+    console.error("Logout failed:", error);
+    // Even if backend fails, clear frontend state
+    setIsLoggedIn(false);
+    navigate("/login");
+  }
 };
 
 
