@@ -21,8 +21,8 @@ This application allows users to:
 
 ## 🚀 **Live Demo**
 
-🌐 **Frontend:** [https://social-media-gamma-opal.vercel.app](https://social-media-gamma-opal.vercel.app)  
-🔗 **Backend API:** [https://social-media-csv9.onrender.com](https://social-media-csv9.onrender.com)
+🌐 [https://social-media-gamma-opal.vercel.app](https://social-media-gamma-opal.vercel.app)  
+
 
 ---
 
