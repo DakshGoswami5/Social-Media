@@ -108,69 +108,122 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center py-10">
-      <div className="w-full max-w-lg mt-10 bg-white p-6 rounded-2xl shadow-md">
-        <h2 className="text-xl font-semibold text-gray-800 mb-4">Upload your image</h2>
+  <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+    {/* Mobile: Stack layout, Desktop: Side-by-side layout */}
+    <div className="container mx-auto px-4 py-6 md:py-10">
+      
+      {/* Desktop: Two column layout, Mobile: Single column */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 mt-6 md:mt-10">
+        
+        {/* Upload Section - Mobile: Full width, Desktop: 1/3 width */}
+        <div className="lg:col-span-1">
+          <div className="bg-white p-6 md:p-8 rounded-3xl shadow-lg hover:shadow-xl transition-shadow duration-300 sticky top-6">
+            <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-6 text-center lg:text-left">
+              Upload Your Image
+            </h2>
 
-        <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 flex flex-col items-center justify-center">
-          <p className="text-gray-500 mb-3">
-            {selectedFile ? selectedFile.name : "Drag & Drop or Click to Upload"}
-          </p>
-          <input type="file" className="hidden" id="fileInput" onChange={handleFileChange} />
-          <label
-            htmlFor="fileInput"
-            className="cursor-pointer bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700 transition"
-          >
-            Choose Image
-          </label>
+            <div className="border-2 border-dashed border-gray-300 rounded-2xl p-8 md:p-10 flex flex-col items-center justify-center bg-gray-50 hover:bg-gray-100 hover:border-blue-400 transition-all duration-300">
+              <svg 
+                className="w-12 h-12 md:w-16 md:h-16 text-gray-400 mb-4" 
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+              </svg>
+              <p className="text-gray-600 mb-4 text-center text-sm md:text-base font-medium">
+                {selectedFile ? selectedFile.name : "Drag & Drop or Click to Upload"}
+              </p>
+              <input type="file" className="hidden" id="fileInput" onChange={handleFileChange} />
+              <label
+                htmlFor="fileInput"
+                className="cursor-pointer bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+              >
+                Choose Image
+              </label>
+            </div>
+
+            <button
+              onClick={handleGenerateCaption}
+              disabled={!isLoggedIn || !selectedFile || isLoading}
+              className={`w-full mt-6 py-3 md:py-4 rounded-xl transition-all duration-300 font-semibold text-base md:text-lg shadow-md ${
+                !isLoggedIn || !selectedFile
+                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                  : "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 hover:shadow-lg transform hover:-translate-y-0.5"
+              }`}
+            >
+              {isLoading
+                ? "✨ Generating..."
+                : !isLoggedIn
+                ? "🔒 Login to Generate Caption"
+                : "🚀 Generate AI Caption"}
+            </button>
+
+            {caption && (
+              <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl border border-blue-200">
+                <p className="text-gray-800 font-medium text-center text-sm md:text-base leading-relaxed">
+                  {caption}
+                </p>
+              </div>
+            )}
+          </div>
         </div>
 
-        <button
-          onClick={handleGenerateCaption}
-          disabled={!isLoggedIn || !selectedFile || isLoading}
-          className={`w-full mt-6 py-2 rounded-xl transition ${
-            !isLoggedIn
-              ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-              : "bg-blue-600 text-white hover:bg-blue-700"
-          }`}
-        >
-          {isLoading
-            ? "Generating..."
-            : !isLoggedIn
-            ? "Login to Generate Caption"
-            : "Generate AI Caption"}
-        </button>
+        {/* Recent Posts Section - Mobile: Full width, Desktop: 2/3 width */}
+        <div className="lg:col-span-2">
+          <div className="mb-6">
+            <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">
+              {isLoggedIn ? "📸 Your Recent Posts" : "🌍 Explore Random Posts"}
+            </h3>
+            <p className="text-gray-600 text-sm md:text-base">
+              {isLoggedIn ? "Your creative moments" : "Discover amazing content"}
+            </p>
+          </div>
 
-        {caption && (
-          <div className="mt-4 text-center text-gray-700 font-medium">{caption}</div>
-        )}
-      </div>
-
-      {/* ✅ Recent Posts Section */}
-      <div className="w-full max-w-5xl mt-12">
-        <h3 className="text-lg font-semibold text-gray-800 mb-4">
-          {isLoggedIn ? "Your Recent Posts" : "Explore Random Posts"}
-        </h3>
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {posts.map((post) => (
-            <div
-              key={post._id}
-              className="bg-white shadow-sm rounded-2xl overflow-hidden hover:shadow-md transition"
-            >
-              <img
-                src={post.image}
-                alt="post"
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-4">
-                <p className="text-gray-700 text-sm">{post.caption}</p>
+          {/* Mobile: 1 column, Tablet: 2 columns, Desktop: 3 columns */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
+            {posts.map((post) => (
+              <div
+                key={post._id}
+                className="bg-white shadow-md rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 group"
+              >
+                <div className="relative overflow-hidden">
+                  <img
+                    src={post.image}
+                    alt="post"
+                    className="w-full h-48 sm:h-56 md:h-64 object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                </div>
+                <div className="p-4 md:p-5">
+                  <p className="text-gray-700 text-sm md:text-base line-clamp-3 leading-relaxed">
+                    {post.caption}
+                  </p>
+                </div>
               </div>
+            ))}
+          </div>
+
+          {/* Empty State */}
+          {posts.length === 0 && (
+            <div className="text-center py-16 md:py-20">
+              <svg 
+                className="w-20 h-20 md:w-24 md:h-24 text-gray-300 mx-auto mb-4" 
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              <p className="text-gray-500 text-lg md:text-xl font-medium">No posts yet</p>
+              <p className="text-gray-400 text-sm md:text-base mt-2">Start creating amazing content!</p>
             </div>
-          ))}
+          )}
         </div>
       </div>
     </div>
-  );
+  </div>
+);
 };
 
 export default Home;
